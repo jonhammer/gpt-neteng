@@ -101,61 +101,42 @@ To run gpt-neteng using Docker Compose:
 
 ## Example
 ### Topology/Device information
-First you need to tell gpt-neteng what devices it is working with. In addition to the devices, you can provide a topology image or simple description of the topology, or you can just tell it to try to figure it out on it's own.
+First you need to tell GPT-NetEng what devices it's working with. You can provide an image or a description. In my demo I provided the following:
 
-In my tests I provided the following expertly crafted topology diagram:
+```
+There are 4 devices:
+- lab1
+- lab2
+- lab3
+- lab4
 
-<img src="example-lab.jpg" alt="Lab topology that looks like it was drawn by a toddler" width="500"/>
-
-It also worked well just providing it with the link information from my [ContainerLab](https://containerlab.srlinux.dev/) definition:
-
-```yaml
-name: gpt-lab
-prefix: ""
-
-topology:
-  nodes:
-    lab1:
-      kind: arista_ceos
-      image: ceos:latest
-    lab2:
-      kind: arista_ceos
-      image: ceos:latest
-    lab3:
-      kind: arista_ceos
-      image: ceos:latest
-    lab4:
-      kind: arista_ceos
-      image: ceos:latest
-
-  links:
-    - endpoints: ["lab1:eth1", "lab2:eth1"]
-    - endpoints: ["lab2:eth2", "lab4:eth2"]
-    - endpoints: ["lab1:eth2", "lab3:eth1"]
-    - endpoints: ["lab3:eth2", "lab4:eth1"]
+Use LLDP to figure out how they are connected
 ```
 
-Alternatively, as long as it has hostnames you can just give it those and have it try to figure out the topology on it's own.
 
 ### Problem description
 
 I spun up a blank lab connected as shown above and provided the following description.
 
-```commandline
+```
 This is a new lab environment of EOS devices.
+
 It is a lab so use whatever numbering schemas (IP, ASNs, etc) you desire.
+
+Since this is a lab you may make changes to all devices at once at each step if you want.
+
 Configure all the connected links on our devices as point to point layer 3 links (e.g., /30s between each device).
+
 Configure BGP on all devices and advertise the loopback interfaces into BGP.
-When you verify BGP status, be aware of convergence times. It may take a while for BGP to converge, so don't spend too much time troubleshooting if it doesn't come up immediately. Come back to it later.
-Ensure reachability from lab1 to lab3 loopback ip. For the lab3 loopback IP use 3.3.3.3
-You can configure these steps in whatever order you think is most efficient. There may be some existing configurations on these devices so be aware of that.
+
+You can configure these steps in whatever order you think is most efficient.
+
 When you finish configuration, verify connectivity by running a ping from lab1 to lab3 loopback ip. If you can ping, you are done. If you can't ping, troubleshoot and fix the issue.
-Note that "no ip routing" is present in the default config, you will need to enable routing and set no switchport for any configured L3 interfaces.
 ```
 
-It took a total of **164 seconds** for it to configure and verify everything ***without any human intervention.***
+It took a total of **151 seconds** for it to configure and verify everything ***without any human intervention.***
 
-You can see how it worked through the task [here](https://gist.githubusercontent.com/jonhammer/959c7d5dc7348d8d89d5df9652cb29c5/raw/41151bdc65ce3acfdac68bd762f495c04fa5744e/gistfile1.txt).
+You can see how it worked through the task [here](https://gist.githubusercontent.com/jonhammer/b8c7eddcd20184b0ac4e417b8b6c4d05/raw/42a347797fcf8eff6b12cd4ee91eec287463941d/gistfile1.txt).
 
 ## How it Works
 
