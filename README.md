@@ -71,8 +71,9 @@ If no arguments are provided, the CLI will prompt you interactively for the requ
 - `--task`: Path to the task description file
 - `--username`: Username for device connection
 - `--password`: Password for device connection
+- `--device-type`: Device type (default: arista_eos)
 - `--loglevel`: Logging level (default: WARNING)
-- `--logfile`: Path to the log file
+- `--logfile`: Path to the log file (leave blank to log to console)
 - `--auto-run`: Run commands without confirmation
 
 ##### Example

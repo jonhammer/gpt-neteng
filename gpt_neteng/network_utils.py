@@ -2,7 +2,7 @@ from netmiko import ConnectHandler
 from rich.progress import Progress
 
 
-def run_commands(commands, username, password):
+def run_commands(commands, username, password, device_type):
     outputs = []
 
     with Progress() as progress:
@@ -13,7 +13,7 @@ def run_commands(commands, username, password):
 
             try:
                 device_config = {
-                    "device_type": "arista_eos",
+                    "device_type": device_type,
                     "ip": device,
                     "username": username,
                     "password": password,

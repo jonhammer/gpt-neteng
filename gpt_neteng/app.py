@@ -202,7 +202,9 @@ def main():
         )
         user_wait_time += time_waited
         if confirm_run_commands:
-            command_output = run_commands(commands, args.username, args.password)
+            command_output = run_commands(
+                commands, args.username, args.password, args.device_type
+            )
             console.print(
                 Panel(
                     Syntax(command_output, "text", theme="monokai", line_numbers=True),

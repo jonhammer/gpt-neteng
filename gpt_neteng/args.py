@@ -14,6 +14,9 @@ def get_arguments():
     )
     parser.add_argument("--username", type=str, help="Username for device connection")
     parser.add_argument("--password", type=str, help="Password for device connection")
+    parser.add_argument(
+        "--device-type", type=str, default="arista_eos", help="Device type"
+    )
     parser.add_argument("--loglevel", type=str, default="WARNING", help="Logging level")
     parser.add_argument("--logfile", type=str, default=None, help="Log file")
     parser.add_argument(
