@@ -7,7 +7,7 @@ The first AI Network Engineer
 [![GitHub stars](https://img.shields.io/github/stars/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/stargazers)
 
 ## Description
-gpt-neteng is the first AI-powered Network Engineer that can troubleshoot and configure live network devices on it's own, with or without human guidance along the way.
+gpt-neteng is the first AI-powered Network Engineer that can troubleshoot and configure live network devices on its own, with or without human guidance along the way.
 
 ## Features
 - Real-time AI-driven troubleshooting and configuration of actual network devices
