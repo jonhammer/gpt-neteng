@@ -141,7 +141,7 @@ def main():
     print("")
     try:
         console.input(
-            "Begin? (press [bold green]Enter[/bold green] to continue or [bold red]Ctrl+C[/bold red] to exit.)"
+            "Begin? (press [bold green]Enter[/bold green] to continue or [bold red]Ctrl+C[/bold red] to exit)."
         )
     except KeyboardInterrupt:
         console.print("Task stopped by the user.", style="bold red")
@@ -186,7 +186,7 @@ def main():
             user_wait_time += wait_time
             if user_response.lower() != "y":
                 console.print(
-                    f"Task completed. Total time elapsed: {calculate_time(start_time, user_wait_time)}",
+                    f"Task completed.\nTotal time elapsed (not including time spent waiting on user input): {calculate_time(start_time, user_wait_time)}",
                     style="bold green",
                 )
                 break
