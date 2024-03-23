@@ -116,7 +116,7 @@ Use LLDP to figure out how they are connected
 
 ### Problem description
 
-I spun up a blank lab provided the following description.
+I spun up a blank lab provided the following description:
 
 ```
 This is a new lab environment of EOS devices.
