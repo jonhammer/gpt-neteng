@@ -37,6 +37,10 @@ def get_arguments():
 
     if not args.password:
         args.password = getpass("Please enter the password for device connection: ")
+
+    if not args.device_type:
+        args.device_type = input("Please enter the device type: ")
+
     if not args.task:
         args.task = input("Please describe the issue you need assistance with: ")
 

@@ -33,12 +33,16 @@ def create_initial_prompt(topology_type, topology_data, task):
     return [message]
 
 
-def send_message_to_claude(messages):
+def send_message_to_claude(messages, device_type):
     client = Anthropic()  # Must set ANTHROPIC_API_KEY environment variable
     logging.debug(f"Sending message to Claude: {messages}")
+    system_prompt = (
+        SYSTEM_PROMPT
+        + f"\nThe commands you run should always use {device_type} syntax."
+    )
     try:
         response = client.messages.create(
-            system=SYSTEM_PROMPT,
+            system=system_prompt,
             max_tokens=1024,
             messages=messages,
             model="claude-3-opus-20240229",

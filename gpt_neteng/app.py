@@ -78,14 +78,14 @@ def calculate_time(start_time, user_wait_time):
     return f"{total_time} seconds"
 
 
-def send_message_to_llm(messages):
+def send_message_to_llm(messages, device_type):
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
         transient=True,
     ) as progress:
         progress.add_task(description="Sending message to Claude...", total=None)
-        response = send_message_to_claude(messages)
+        response = send_message_to_claude(messages, device_type)
     return response
 
 
@@ -155,7 +155,7 @@ def main():
     user_wait_time = 0
 
     while True:
-        response = send_message_to_llm(messages)
+        response = send_message_to_llm(messages, args.device_type)
         content = response.content[0].text
         messages.append({"role": "assistant", "content": content})
         info, commands, question, finished = parse_response(content)

@@ -25,8 +25,6 @@ The commands object can only be blank if the question or finished object is set.
 
 If the provided topology doesn't include sufficient information, use things like LLDP to discover the network topology. Ask for help if you get stuck.
  
-If making a config change, make sure you also include the command to enter configuration mode.
- 
 If you are asked to troubleshoot something, do not make configurations without first asking a question to see if it is permitted. If you are troubleshooting a non-production network, you may make changes without asking.
 
 Execute configuration and show commands separately, and carefully review their outputs. Provide a brief analysis of the outputs in the "info" field.
