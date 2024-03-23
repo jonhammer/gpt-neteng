@@ -19,18 +19,36 @@ console = Console()
 
 
 def parse_response(response):
-    try:
-        response_json = json.loads(response, strict=False)
-        info = response_json.get("info", "")
-        commands = response_json.get("commands", [])
-        question = response_json.get("question", "")
-        finished = response_json.get("finished", False)
-        return info, commands, question, finished
-    except json.JSONDecodeError:
-        console.print(
-            "Error: Unable to parse JSON response from Claude", style="bold red"
-        )
-        return "", [], "", False
+    user_wait_time = 0
+    while True:
+        try:
+            response_json = json.loads(response, strict=False)
+            info = response_json.get("info", "")
+            commands = response_json.get("commands", [])
+            question = response_json.get("question", "")
+            finished = response_json.get("finished", False)
+            wait_time = response_json.get("wait", 0)
+            return info, commands, question, finished, wait_time, user_wait_time
+        except json.JSONDecodeError:
+            console.print(
+                "Error: Unable to parse JSON response from GPT-NetEng. This is usually because GPT-NetEng failed to properly format the response, and can be fixed by re-trying.",
+                style="bold red",
+            )
+
+            response = None
+            while not response:
+                prompt = 'Enter "p" to print the unexpected response or just press [bold green]Enter[/bold green] to retry or [bold red]CTRL+C[/bold red] to exit.'
+                try:
+                    user_response, wait_time = get_user_response(prompt)
+                except KeyboardInterrupt:
+                    console.print("\nTask stopped by the user.", style="bold red")
+                    sys.exit(0)
+                user_wait_time += wait_time
+
+                if not user_response:
+                    break
+                if user_response == "p":
+                    console.print(response)
 
 
 def confirm_commands(commands, auto_run):
@@ -154,11 +172,16 @@ def main():
 
     user_wait_time = 0
 
-    while True:
+    max_iterations = args.max_iterations
+    iterations = 0
+    while iterations < max_iterations:
         response = send_message_to_llm(messages, args.device_type)
         content = response.content[0].text
         messages.append({"role": "assistant", "content": content})
-        info, commands, question, finished = parse_response(content)
+        info, commands, question, finished, wait_time, retry_user_wait_time = (
+            parse_response(content)
+        )
+        user_wait_time += retry_user_wait_time
 
         # Debugging
         end_time = time.time()
@@ -172,9 +195,14 @@ def main():
         # End Debugging
 
         console.print(Panel(info, title="Response from GPT-NetEng", expand=False))
+        if wait_time:
+            console.print(
+                f"Waiting for {wait_time} seconds before running the next set of commands..."
+            )
+            time.sleep(wait_time)
 
         if question:
-            prompt = f"[bold blue]Question from Claude:[/bold blue] {question}\n[bold green]User Response:[/bold green] "
+            prompt = f"[bold blue]Question from GPT-NetEng:[/bold blue] {question}\n[bold green]User Response:[/bold green] "
             user_response, wait_time = get_user_response(prompt)
             user_wait_time += wait_time
             messages.append({"role": "user", "content": user_response})
@@ -186,7 +214,7 @@ def main():
             user_wait_time += wait_time
             if user_response.lower() != "y":
                 console.print(
-                    f"Task completed.\nTotal time elapsed (not including time spent waiting on user input): {calculate_time(start_time, user_wait_time)}",
+                    f"Task completed.\nTotal time elapsed in {iterations} steps (not including time spent waiting on user input): {calculate_time(start_time, user_wait_time)}",
                     style="bold green",
                 )
                 break
@@ -214,6 +242,13 @@ def main():
             messages.append({"role": "user", "content": command_output})
         else:
             messages.append({"role": "user", "content": user_feedback})
+
+        iterations += 1
+
+    console.print(
+        f"Task stopped after {iterations} iterations.\nTotal time elapsed (not including time spent waiting on user input): {calculate_time(start_time, user_wait_time)}",
+        style="bold green",
+    )
 
 
 if __name__ == "__main__":

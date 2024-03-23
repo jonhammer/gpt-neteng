@@ -25,6 +25,12 @@ def get_arguments():
         help="Run commands without confirmation",
         default=False,
     )
+    parser.add_argument(
+        "--max-iterations",
+        type=int,
+        default=50,
+        help="Maximum iterations to allow before stopping",
+    )
     args = parser.parse_args()
 
     if not args.topology:
