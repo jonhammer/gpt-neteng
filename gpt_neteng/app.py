@@ -34,6 +34,8 @@ def parse_response(response):
                 "Error: Unable to parse JSON response from GPT-NetEng. This is usually because GPT-NetEng failed to properly format the response, and can be fixed by re-trying.",
                 style="bold red",
             )
+            console.print("Resonse received:", style="yellow")
+            console.print(response)
             raise
 
 
@@ -230,11 +232,6 @@ def main():
             messages.append({"role": "user", "content": user_feedback})
 
         iterations += 1
-
-    console.print(
-        f"Task stopped after {iterations} iterations.\nTotal time elapsed (not including time spent waiting on user input): {calculate_time(start_time, user_wait_time)}",
-        style="bold green",
-    )
 
 
 if __name__ == "__main__":
