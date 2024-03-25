@@ -34,21 +34,7 @@ def parse_response(response):
                 "Error: Unable to parse JSON response from GPT-NetEng. This is usually because GPT-NetEng failed to properly format the response, and can be fixed by re-trying.",
                 style="bold red",
             )
-
-            response = None
-            while not response:
-                prompt = 'Enter "p" to print the unexpected response or just press [bold green]Enter[/bold green] to retry or [bold red]CTRL+C[/bold red] to exit.'
-                try:
-                    user_response, wait_time = get_user_response(prompt)
-                except KeyboardInterrupt:
-                    console.print("\nTask stopped by the user.", style="bold red")
-                    sys.exit(0)
-                user_wait_time += wait_time
-
-                if not user_response:
-                    break
-                if user_response == "p":
-                    console.print(response)
+            raise
 
 
 def confirm_commands(commands, auto_run):
@@ -102,7 +88,7 @@ def send_message_to_llm(messages, device_type):
         TextColumn("[progress.description]{task.description}"),
         transient=True,
     ) as progress:
-        progress.add_task(description="Sending message to Claude...", total=None)
+        progress.add_task(description="", total=None)
         response = send_message_to_claude(messages, device_type)
     return response
 
