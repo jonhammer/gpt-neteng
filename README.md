@@ -6,6 +6,20 @@ The first AI Network Engineer
 [![GitHub issues](https://img.shields.io/github/issues/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/issues)
 [![GitHub stars](https://img.shields.io/github/stars/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/stargazers)
 
+## Table of Contents
+- [Description](#description)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Lab Environment](#lab-environment)
+- [Example](#example)
+- [How it Works](#how-it-works)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [CLI](#cli)
+  - [Docker](#docker)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Description
 GPT-NetEng an AI-powered Network Engineer that can troubleshoot and configure live network devices on its own, with or without human guidance along the way.
 
@@ -25,6 +39,54 @@ GPT-NetEng an AI-powered Network Engineer that can troubleshoot and configure li
 I highly recommend using [ContainerLab](https://containerlab.srlinux.dev/) for setting up local lab environments.
 
 In my testing I used [cEOS](https://www.arista.com/en/support/software-download).
+
+## Example
+### Topology/Device information
+First tell GPT-NetEng what devices it's working with. You can provide an image or a description. In this example I provided the following:
+
+```
+There are 4 devices:
+- lab1
+- lab2
+- lab3
+- lab4
+
+Use LLDP to figure out how they are connected
+```
+
+### Problem description
+
+Then I gave it the following task:
+
+```
+This is a new lab environment of EOS devices.
+
+It is a lab so use whatever numbering schemas (IP, ASNs, etc) you desire.
+
+Since this is a lab you may make changes to all devices at once at each step if you want.
+
+Configure all the connected links on our devices as point to point layer 3 links (e.g., /30s between each device).
+
+Configure BGP on all devices and advertise the loopback interfaces into BGP.
+
+You can configure these steps in whatever order you think is most efficient.
+
+When you finish configuration, verify connectivity by running a ping from lab1 to lab3 loopback ip. If you can ping, you are done. If you can't ping, troubleshoot and fix the issue.
+```
+
+It took a total of **151 seconds** for it to configure and verify everything ***without any human intervention.***
+
+You can see how it worked through the task [here](https://gist.githubusercontent.com/jonhammer/b8c7eddcd20184b0ac4e417b8b6c4d05/raw/42a347797fcf8eff6b12cd4ee91eec287463941d/gistfile1.txt).
+
+## How it Works
+
+1. gpt-neteng analyzes the topology and the task description.
+2. It decides on an approach, and iteratively provides the commands it wants to run.
+3. At each step, the plan is presented to the user for confirmation (or optionally, without confirmation).
+4. gpt-neteng executes the necessary commands on the specified network devices using Netmiko.
+5. The output of the commands is captured and analyzed for further action.
+6. gpt-neteng iteratively refines the plan based on the command outputs and user feedback.
+7. Once the task is completed successfully, a summary of the actions taken is provided.
 
 ## Installation
 
@@ -99,55 +161,6 @@ To run gpt-neteng using Docker Compose:
    ```
 
 
-
-## Example
-### Topology/Device information
-First tell GPT-NetEng what devices it's working with. You can provide an image or a description. In this example I provided the following:
-
-```
-There are 4 devices:
-- lab1
-- lab2
-- lab3
-- lab4
-
-Use LLDP to figure out how they are connected
-```
-
-
-### Problem description
-
-Then I gave it the following task:
-
-```
-This is a new lab environment of EOS devices.
-
-It is a lab so use whatever numbering schemas (IP, ASNs, etc) you desire.
-
-Since this is a lab you may make changes to all devices at once at each step if you want.
-
-Configure all the connected links on our devices as point to point layer 3 links (e.g., /30s between each device).
-
-Configure BGP on all devices and advertise the loopback interfaces into BGP.
-
-You can configure these steps in whatever order you think is most efficient.
-
-When you finish configuration, verify connectivity by running a ping from lab1 to lab3 loopback ip. If you can ping, you are done. If you can't ping, troubleshoot and fix the issue.
-```
-
-It took a total of **151 seconds** for it to configure and verify everything ***without any human intervention.***
-
-You can see how it worked through the task [here](https://gist.githubusercontent.com/jonhammer/b8c7eddcd20184b0ac4e417b8b6c4d05/raw/42a347797fcf8eff6b12cd4ee91eec287463941d/gistfile1.txt).
-
-## How it Works
-
-1. gpt-neteng analyzes the topology and the task description.
-2. It decides on an approach, and iteratively provides the commands it wants to run.
-3. At each step, the plan is presented to the user for confirmation (or optionally, without confirmation).
-4. gpt-neteng executes the necessary commands on the specified network devices using Netmiko.
-5. The output of the commands is captured and analyzed for further action.
-6. gpt-neteng iteratively refines the plan based on the command outputs and user feedback.
-7. Once the task is completed successfully, a summary of the actions taken is provided.
 
 ## Contributing
 
