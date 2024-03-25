@@ -1,7 +1,5 @@
 # GPT-NetEng
 
-The first AI Network Engineer
-
 [![GitHub](https://img.shields.io/github/license/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/issues)
 [![GitHub stars](https://img.shields.io/github/stars/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/stargazers)
