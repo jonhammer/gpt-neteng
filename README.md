@@ -7,7 +7,7 @@ The first AI Network Engineer
 [![GitHub stars](https://img.shields.io/github/stars/jonhammer/gpt-neteng)](https://github.com/jonhammer/gpt-neteng/stargazers)
 
 ## Description
-GPT-NetEng is the first AI-powered Network Engineer that can troubleshoot and configure live network devices on its own, with or without human guidance along the way.
+GPT-NetEng an AI-powered Network Engineer that can troubleshoot and configure live network devices on its own, with or without human guidance along the way.
 
 ## Features
 - Real-time AI-driven troubleshooting and configuration of actual network devices
@@ -18,7 +18,7 @@ GPT-NetEng is the first AI-powered Network Engineer that can troubleshoot and co
 
 - Python 3.9+
 - [Anthropic](https://www.anthropic.com/) API key
-- SSH access to network lab devices (or production devices if you are an insane person)
+- SSH access to network devices
 
 ## Lab Environment
 
@@ -102,7 +102,7 @@ To run gpt-neteng using Docker Compose:
 
 ## Example
 ### Topology/Device information
-First you need to tell GPT-NetEng what devices it's working with. You can provide an image or a description. In my demo I provided the following:
+First tell GPT-NetEng what devices it's working with. You can provide an image or a description. In this example I provided the following:
 
 ```
 There are 4 devices:
@@ -117,7 +117,7 @@ Use LLDP to figure out how they are connected
 
 ### Problem description
 
-I spun up a blank lab provided the following description:
+Then I gave it the following task:
 
 ```
 This is a new lab environment of EOS devices.
@@ -141,7 +141,7 @@ You can see how it worked through the task [here](https://gist.githubusercontent
 
 ## How it Works
 
-1. gpt-neteng analyzes the topology and and the task description.
+1. gpt-neteng analyzes the topology and the task description.
 2. It decides on an approach, and iteratively provides the commands it wants to run.
 3. At each step, the plan is presented to the user for confirmation (or optionally, without confirmation).
 4. gpt-neteng executes the necessary commands on the specified network devices using Netmiko.
