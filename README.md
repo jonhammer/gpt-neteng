@@ -19,7 +19,7 @@
 - [License](#license)
 
 ## Description
-GPT-NetEng an AI-powered Network Engineer that can troubleshoot and configure live network devices on its own, with or without human guidance along the way.
+GPT-NetEng is an AI-powered Network Engineer that can troubleshoot and configure live network devices on its own, with or without human guidance along the way.
 
 ## Features
 - Real-time AI-driven troubleshooting and configuration of actual network devices
